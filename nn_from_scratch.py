@@ -29,9 +29,7 @@ X_train = X_train / 255.
 _,m_train = X_train.shape
 
 def init_params():  
-
-    "randm init weights and bias for first pass"
-
+    "randm init weights and bias for quick pass"
     W1 = np.random.rand(10, 784) - 0.5
     b1 = np.random.rand(10, 1) - 0.5
     W2 = np.random.rand(10, 10) - 0.5
@@ -56,9 +54,13 @@ def forward_prop(W1, b1, W2, b2, X):
     return Z1, A1, Z2, A2
 
 def ReLU_deriv(Z):
+    """First derivative of ReLu"""
     return Z > 0
 
 def one_hot(Y):
+    """
+    Converting final output into vector
+    """ 
     one_hot_Y = np.zeros((Y.size, Y.max() + 1))
     one_hot_Y[np.arange(Y.size), Y] = 1
     one_hot_Y = one_hot_Y.T
