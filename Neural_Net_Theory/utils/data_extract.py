@@ -4,7 +4,7 @@ import zipfile
 from pathlib import Path
 
 # Setup path to data folder
-data_path = Path("data/")
+data_path = Path("../data/")
 image_path = data_path / "pizza_steak_sushi"
 
 # If the image folder doesn't exist, download it and prepare it...

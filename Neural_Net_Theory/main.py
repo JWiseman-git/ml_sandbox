@@ -1,5 +1,7 @@
 import torch
-import data_setup, engine, model_builder, utils
+from model_builder import engine, model_builder
+from utils import data_setup
+from utils.save import save_model
 
 from torchvision import transforms
 
@@ -52,6 +54,6 @@ engine.train(model=model,
              device=device)
 
 # Save the model with help from utils.py
-utils.save_model(model=model,
+save_model(model=model,
                  target_dir="models",
                  model_name="05_going_modular_script_mode_tinyvgg_model.pth")
