@@ -6,3 +6,5 @@ train.csv
 
 # compiled digrpahs
 *.gv
+
+*__pycache__
