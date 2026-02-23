@@ -8,6 +8,7 @@ Full credit to: https://sebastianraschka.com/blog/2023/self-attention-from-scrat
 """
 
 import torch
+import torch.nn.functional as F
 
 sentence = 'Life is short, eat dessert first'
 
@@ -59,3 +60,15 @@ values = W_value.matmul(embedded_sentence.T).T
 
 omega_2 = query_2.matmul(keys.T)
 print(omega_2)
+
+"""Computing attention scores"""
+
+attention_weights_2 = F.softmax(omega_2 / d_k**0.5, dim=0)
+print(attention_weights_2)
+
+"""Determination of the context vector"""
+
+context_vector_2 = attention_weights_2.matmul(values)
+
+print(context_vector_2.shape)
+print(context_vector_2)
