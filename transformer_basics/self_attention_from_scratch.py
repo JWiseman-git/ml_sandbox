@@ -3,6 +3,8 @@ self attention:
      Enhances the information content of an input by considering the context
 
 This is a recreation of the scaled dot product attention mechanism
+
+Full credit to: https://sebastianraschka.com/blog/2023/self-attention-from-scratch.html
 """
 
 import torch
@@ -28,3 +30,32 @@ embedded_sentence = embed(sentence_int).detach()
 """
 Defining the Weights Matrices
 """
+
+torch.manual_seed(123)
+
+d = embedded_sentence.shape[1]
+
+d_q, d_k, d_v = 24, 24, 28
+
+W_query = torch.nn.Parameter(torch.rand(d_q, d))
+W_key = torch.nn.Parameter(torch.rand(d_k, d))
+W_value = torch.nn.Parameter(torch.rand(d_v, d))
+
+"""
+Computing Unnormalized Scaled Dot Product Attention Weights
+"""
+
+x_2 = embedded_sentence[1]
+query_2 = W_query.matmul(x_2)
+key_2 = W_key.matmul(x_2)
+value_2 = W_value.matmul(x_2)
+
+print(query_2.shape)
+print(key_2.shape)
+print(value_2.shape)
+
+keys = W_key.matmul(embedded_sentence.T).T
+values = W_value.matmul(embedded_sentence.T).T
+
+omega_2 = query_2.matmul(keys.T)
+print(omega_2)
