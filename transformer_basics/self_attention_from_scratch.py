@@ -2,10 +2,12 @@
 self attention:
      Enhances the information content of an input by considering the context
 
-This is a recreation of the scaled dot product attention mechanism
+This is a recreation of the scaled dot product attention mechanism - first using single head then multi head attention
 
 Full credit to: https://sebastianraschka.com/blog/2023/self-attention-from-scratch.html
 """
+
+"""Single Head Implementation"""
 
 import torch
 import torch.nn.functional as F
@@ -15,7 +17,7 @@ sentence = 'Life is short, eat dessert first'
 dc = {s:i for i,s in enumerate(sorted(sentence.replace(',', '').split()))}
 
 sentence_int = torch.tensor([dc[s] for s in sentence.replace(',', '').split()])
-# print(sentence_int)
+
 
 """
 Now, using the integer-vector representation of the input sentence,
@@ -51,24 +53,40 @@ query_2 = W_query.matmul(x_2)
 key_2 = W_key.matmul(x_2)
 value_2 = W_value.matmul(x_2)
 
-print(query_2.shape)
-print(key_2.shape)
-print(value_2.shape)
-
 keys = W_key.matmul(embedded_sentence.T).T
 values = W_value.matmul(embedded_sentence.T).T
 
 omega_2 = query_2.matmul(keys.T)
-print(omega_2)
 
 """Computing attention scores"""
 
 attention_weights_2 = F.softmax(omega_2 / d_k**0.5, dim=0)
-print(attention_weights_2)
 
 """Determination of the context vector"""
 
 context_vector_2 = attention_weights_2.matmul(values)
 
-print(context_vector_2.shape)
-print(context_vector_2)
+"""
+Multi Head Attention of dim 3 (3 attention heads)
+"""
+
+h = 3
+multihead_W_query = torch.nn.Parameter(torch.rand(h, d_q, d))
+multihead_W_key = torch.nn.Parameter(torch.rand(h, d_k, d))
+multihead_W_value = torch.nn.Parameter(torch.rand(h, d_v, d))
+
+multihead_query_2 = multihead_W_query.matmul(x_2)
+multihead_key_2 = multihead_W_key.matmul(x_2)
+multihead_value_2 = multihead_W_value.matmul(x_2)
+
+stacked_inputs = embedded_sentence.T.repeat(3, 1, 1)
+
+multihead_keys = torch.bmm(multihead_W_key, stacked_inputs)
+multihead_values = torch.bmm(multihead_W_value, stacked_inputs)
+print("multihead_keys.shape:", multihead_keys.shape)
+print("multihead_values.shape:", multihead_values.shape)
+
+multihead_keys = multihead_keys.permute(0, 2, 1)
+multihead_values = multihead_values.permute(0, 2, 1)
+print("multihead_keys.shape:", multihead_keys.shape)
+print("multihead_values.shape:", multihead_values.shape)
