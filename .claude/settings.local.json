@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv init:*)",
+      "Bash(cd /mnt/c/Users/jorda/PycharmProjects/ml_sandbox/movie_genre_classification && uv add pandas scikit-learn requests black isort pylama 2>&1)",
+      "Bash(cd /mnt/c/Users/jorda/PycharmProjects/ml_sandbox/movie_genre_classification && uv add pandas scikit-learn 2>&1)",
+      "Bash(uv add:*)",
+      "Bash(uv run:*)"
+    ]
+  }
+}
